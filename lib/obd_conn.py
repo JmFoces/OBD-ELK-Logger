@@ -1,5 +1,8 @@
+import datetime
+import logging
+
 import obd
-from obd import Unit
+import binascii
 from obd.OBDResponse import Status
 
 from lib.db.ecudata import ECUData
@@ -24,12 +27,23 @@ class OBDConn:
 
     def on_event(self, event):
         if not isinstance(event.value, Status):
-            data_obj = ECUData(
-                date=event.time,
-                type="{}{}".format(chr(event.command.mode).encode("hex"), chr(event.command.pid).encode("hex")),
-                value=event.value.magnitude,
-                unit=str(event.value.u))
-            OfflineHandler.cache(data_obj)
+            logging.debug("Event: "+str(event))
+            cmd_type = "{}{}".format(hex(event.command.mode), hex(event.command.pid)).replace("0x", '')
+            logging.debug("TYPE: "+cmd_type)
+            if event.value:
+                try:
+                    magnitude = event.value.magnitude
+                    value = event.value.u
+                except AttributeError:
+                    magnitude = "Unknown"
+                    value = event.value
+                data_obj = ECUData(
+                    date=datetime.date.fromtimestamp(event.time),
+                    type=cmd_type,
+                    value=str(value),
+                    unit=magnitude
+                )
+                OfflineHandler.cache(data_obj)
 
     def stop(self):
         self.connection.stop()
