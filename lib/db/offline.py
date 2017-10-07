@@ -51,9 +51,7 @@ class OfflineHandler:
                 event = cls.buffer.get()
                 try:
                     event.save()
-                    print("Saved")
                 except elasticsearch.exceptions.ConnectionError:
-                    print("Stored")
                     cls.save_for_later(event)
             except Exception as e:
                 #logging.exception(e)
