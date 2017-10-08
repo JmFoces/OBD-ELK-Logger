@@ -31,17 +31,17 @@ class OBDConn:
             cmd_type = "{}{}".format(hex(event.command.mode), hex(event.command.pid)).replace("0x", '')
             if event.value:
                 try:
-                    magnitude = event.value.magnitude
-                    value = event.value.u
+                    value = event.value.magnitude
+                    unit = event.value.u
                 except AttributeError:
-                    magnitude = "Unknown"
-                    value = event.value
-                logging.debug("Event: {} TYPE: {} - Unit: {} Value: {}".format(str(event), cmd_type, magnitude, value))
+                    value = "Unknown"
+                    unit = event.value
+                logging.debug("Event: {} TYPE: {} - Unit: {} Value: {}".format(str(event), cmd_type, magnitude, unit))
                 data_obj = ECUData(
                     date=datetime.date.fromtimestamp(event.time),
                     type=cmd_type,
-                    value=str(value),
-                    unit=magnitude
+                    value=str(unit),
+                    unit=value
                 )
                 OfflineHandler.cache(data_obj)
 
