@@ -1,6 +1,6 @@
 import base64
 import logging
-from queue import Queue
+from queue import Queue,Empty
 
 import pickle
 from threading import Thread
@@ -36,7 +36,12 @@ class OfflineHandler:
 
     @classmethod
     def load_all_saved(cls):
-        serialized_file = open(cls.cache_fpath, 'r')
+        try:
+            serialized_file = open(cls.cache_fpath, 'r')
+            logging.info("Connection up. Requeue saved records")
+        except IOError:
+            # Nothing saved for upload
+            return
         for line in serialized_file:
             ecudata = pickle.loads(line)
             cls.cache(ecudata)
@@ -46,14 +51,17 @@ class OfflineHandler:
 
     @classmethod
     def work(cls):
-        while cls.continue_working or cls.buffer.not_empty:
+        while cls.continue_working or not cls.buffer.empty():
             try:
-                event = cls.buffer.get()
+                event = cls.buffer.get(timeout=2)
                 try:
                     event.save()
+                    cls.load_all_saved()
                 except elasticsearch.exceptions.ConnectionError:
                     cls.save_for_later(event)
+            except Empty:
+                continue
             except Exception as e:
-                #logging.exception(e)
+                logging.exception(e)
                 pass
 

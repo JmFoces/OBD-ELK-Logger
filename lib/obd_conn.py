@@ -2,7 +2,6 @@ import datetime
 import logging
 
 import obd
-import binascii
 from obd.OBDResponse import Status
 
 from lib.db.ecudata import ECUData
@@ -24,12 +23,12 @@ class OBDConn:
                         print("listening for {0}".format(cmd))
                 except Exception:
                     pass
+        logging.info("Car connected")
 
-    def on_event(self, event):
+    @staticmethod
+    def on_event(event):
         if not isinstance(event.value, Status):
-            logging.debug("Event: "+str(event))
             cmd_type = "{}{}".format(hex(event.command.mode), hex(event.command.pid)).replace("0x", '')
-            logging.debug("TYPE: "+cmd_type)
             if event.value:
                 try:
                     magnitude = event.value.magnitude
@@ -37,6 +36,7 @@ class OBDConn:
                 except AttributeError:
                     magnitude = "Unknown"
                     value = event.value
+                logging.debug("Event: {} TYPE: {} - Unit: {} Value: {}".format(str(event), cmd_type, magnitude, value))
                 data_obj = ECUData(
                     date=datetime.date.fromtimestamp(event.time),
                     type=cmd_type,
@@ -48,3 +48,4 @@ class OBDConn:
     def stop(self):
         self.connection.stop()
         self.connection.unwatch_all()
+        logging.debug("Car disconnected")
