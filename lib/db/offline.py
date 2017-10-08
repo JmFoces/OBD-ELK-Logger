@@ -16,8 +16,9 @@ class OfflineHandler:
 
     @classmethod
     def start(cls):
-        cls.worker = Thread(target=cls.work, args=())
-        cls.worker.start()
+        if not cls.worker or not cls.worker.is_alive():
+            cls.worker = Thread(target=cls.work, args=(),daemon=True)
+            cls.worker.start()
 
     @classmethod
     def stop(cls):
