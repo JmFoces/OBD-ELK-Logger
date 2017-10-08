@@ -36,7 +36,7 @@ class OBDConn:
                 except AttributeError:
                     value = event.value
                     unit = "unknown"
-                logging.debug("Event: {} TYPE: {} - Unit: {} Value: {}".format(str(event), cmd_type, magnitude, unit))
+                logging.debug("Event: {} TYPE: {} - Unit: {} Value: {}".format(str(event), cmd_type, value, unit))
                 data_obj = ECUData(
                     date=datetime.date.fromtimestamp(event.time),
                     type=cmd_type,
