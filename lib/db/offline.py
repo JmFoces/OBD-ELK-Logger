@@ -58,6 +58,9 @@ class OfflineHandler:
                 try:
                     event.save()
                     cls.load_all_saved()
+                except elasticsearch.exceptions.SerializationError:
+                    event.value = str(event.value)
+                    event.save()
                 except elasticsearch.exceptions.ConnectionError:
                     cls.save_for_later(event)
             except Empty:
