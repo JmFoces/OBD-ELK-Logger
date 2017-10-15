@@ -10,7 +10,7 @@ obd.logger.setLevel(obd.logging.INFO)
 obd.logger.removeHandler(obd.console_handler)
 obd.logger.addHandler(fh)
 
-logging.basicConfig(level=logging.DEBUG, filename="./app.log")
+logging.basicConfig(level=logging.DEBUG, filename="./app.log",format='%(asctime)s:%(levelname)s:%(message)s')
 
 if __name__ == "__main__":
     try:
