@@ -21,8 +21,8 @@ class OBDConn:
                     if self.connection.supports(cmd) and cmd.pid not in self.BAD_COMMANDS:
                         self.connection.watch(cmd, callback=self.on_event)
                         print("listening for {0}".format(cmd))
-                except Exception:
-                    pass
+                except Exception as e:
+                    logging.exception(e)
         logging.info("Car connected")
 
     @staticmethod
