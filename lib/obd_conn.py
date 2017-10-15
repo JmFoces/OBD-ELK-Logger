@@ -31,8 +31,8 @@ class OBDConn:
             cmd_type = "{}{}".format(hex(event.command.mode), hex(event.command.pid)).replace("0x", '')
             if event.value:
                 try:
-                    value = event.value.magnitude
-                    unit = event.value.u
+                    value = event.value.u
+                    unit = event.value.magnitude
                 except AttributeError:
                     value = event.value
                     unit = "unknown"
