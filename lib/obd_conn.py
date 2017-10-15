@@ -38,7 +38,7 @@ class OBDConn:
                     unit = "unknown"
                 logging.debug("Event: {} TYPE: {} - Unit: {} Value: {}".format(str(event), cmd_type, value, unit))
                 data_obj = ECUData(
-                    date=int(event.time),
+                    date=datetime.datetime.now(),
                     type=cmd_type,
                     value=str(unit),
                     unit=value
