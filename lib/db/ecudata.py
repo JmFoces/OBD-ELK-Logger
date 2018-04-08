@@ -2,7 +2,7 @@ import logging
 
 import config
 import elasticsearch
-from elasticsearch_dsl import DocType, Date, String, Integer
+from elasticsearch_dsl import DocType, Date, Text, Integer
 from elasticsearch_dsl.connections import connections
 
 try:
@@ -17,9 +17,9 @@ except elasticsearch.exceptions.ConnectionError:
 
 class ECUData(DocType):
     date = Date()
-    type = String()
-    value = String()
-    unit = String()
+    type = Text()
+    value = Text()
+    unit = Text()
 
     class Meta:
         index = 'ecudata'
