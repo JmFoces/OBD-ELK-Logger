@@ -24,6 +24,8 @@ class ECUData(DocType):
     class Meta:
         index = 'ecudata'
 
+    def save(self, **kwargs):
+        return super().save(**kwargs)
 try:
     ECUData.init()
 except elasticsearch.exceptions.RequestError:
