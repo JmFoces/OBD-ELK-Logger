@@ -1,0 +1,36 @@
+2018-04-10 19:11:57,902:INFO:======================= python-OBD (v0.6.1) =======================
+2018-04-10 19:11:57,903:INFO:Using scan_serial to select port
+2018-04-10 19:11:57,908:INFO:Available ports: []
+2018-04-10 19:11:57,909:WARNING:No OBD-II adapters found
+2018-04-10 19:11:57,909:WARNING:Cannot load commands: No connection to car
+2018-04-10 19:11:57,910:INFO:===================================================================
+2018-04-10 19:13:01,794:INFO:======================= python-OBD (v0.6.1) =======================
+2018-04-10 19:13:01,794:INFO:Using scan_serial to select port
+2018-04-10 19:13:01,796:INFO:Available ports: []
+2018-04-10 19:13:01,796:WARNING:No OBD-II adapters found
+2018-04-10 19:13:01,796:WARNING:Cannot load commands: No connection to car
+2018-04-10 19:13:01,797:INFO:===================================================================
+2018-04-10 19:14:34,392:INFO:======================= python-OBD (v0.6.1) =======================
+2018-04-10 19:14:34,392:INFO:Using scan_serial to select port
+2018-04-10 19:14:34,394:INFO:Available ports: []
+2018-04-10 19:14:34,394:WARNING:No OBD-II adapters found
+2018-04-10 19:14:34,394:WARNING:Cannot load commands: No connection to car
+2018-04-10 19:14:34,394:INFO:===================================================================
+2018-04-10 19:15:04,842:INFO:======================= python-OBD (v0.6.1) =======================
+2018-04-10 19:15:04,842:INFO:Using scan_serial to select port
+2018-04-10 19:15:04,844:INFO:Available ports: []
+2018-04-10 19:15:04,844:WARNING:No OBD-II adapters found
+2018-04-10 19:15:04,844:WARNING:Cannot load commands: No connection to car
+2018-04-10 19:15:04,844:INFO:===================================================================
+2018-04-10 19:18:25,660:INFO:======================= python-OBD (v0.6.1) =======================
+2018-04-10 19:18:25,660:INFO:Using scan_serial to select port
+2018-04-10 19:18:25,662:INFO:Available ports: []
+2018-04-10 19:18:25,662:WARNING:No OBD-II adapters found
+2018-04-10 19:18:25,662:WARNING:Cannot load commands: No connection to car
+2018-04-10 19:18:25,662:INFO:===================================================================
+2018-04-10 19:19:26,503:INFO:======================= python-OBD (v0.6.1) =======================
+2018-04-10 19:19:26,504:INFO:Using scan_serial to select port
+2018-04-10 19:19:26,505:INFO:Available ports: []
+2018-04-10 19:19:26,505:WARNING:No OBD-II adapters found
+2018-04-10 19:19:26,505:WARNING:Cannot load commands: No connection to car
+2018-04-10 19:19:26,505:INFO:===================================================================

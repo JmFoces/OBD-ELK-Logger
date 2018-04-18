@@ -6,6 +6,7 @@ import pickle
 from threading import Thread
 
 import elasticsearch
+import pint
 
 
 class OfflineHandler:
@@ -37,17 +38,26 @@ class OfflineHandler:
 
     @classmethod
     def load_all_saved(cls):
+        cls.load_backup(cls.cache_fpath)
+        serialized_file = open(cls.cache_fpath, 'w')
+        serialized_file.close()
+
+    @classmethod
+    def load_backup(cls,fname):
         try:
-            serialized_file = open(cls.cache_fpath, 'r')
+            serialized_file = open(fname, 'r')
             logging.info("Connection up. Requeue saved records")
         except IOError:
             # Nothing saved for upload
             return
         for line in serialized_file:
-            ecudata = pickle.loads(line)
+            try:
+                ecudata = pickle.loads(base64.b64decode(line))
+            except (IndexError) as e:
+                print(e)
+                print(line)
+                continue
             cls.cache(ecudata)
-        serialized_file.close()
-        serialized_file = open(cls.cache_fpath, 'w')
         serialized_file.close()
 
     @classmethod
@@ -55,17 +65,21 @@ class OfflineHandler:
         while cls.continue_working or not cls.buffer.empty():
             try:
                 event = cls.buffer.get(timeout=2)
-                try:
-                    event.save()
-                    cls.load_all_saved()
-                except elasticsearch.exceptions.SerializationError:
-                    event.value = str(event.value)
-                    event.save()
-                except elasticsearch.exceptions.ConnectionError:
-                    cls.save_for_later(event)
+                cls.save_event(event)
             except Empty:
                 continue
             except Exception as e:
                 logging.exception(e)
                 pass
+    @classmethod
+    def save_event(cls, event):
+        try:
+            if event:
+                event.save()
+            cls.load_all_saved()
+        except elasticsearch.exceptions.SerializationError:
+            event.value = str(event.value)
+            event.save()
+        except elasticsearch.exceptions.ConnectionError:
+            cls.save_for_later(event)
 

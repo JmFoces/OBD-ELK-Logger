@@ -26,24 +26,32 @@ class OBDConn:
         logging.info("Car connected")
 
     @staticmethod
+    def create_dataobj(event):
+
+        if event and event.value:
+            try:
+                cmd_type = "{}{}".format(hex(event.command.mode), hex(event.command.pid)).replace("0x", '')
+            except AttributeError:
+                pass
+            try:
+                unit = event.value.u
+                value = str(event.value.magnitude)
+            except AttributeError:
+                value = str(event.value)
+                unit = "unknown"
+            logging.debug("Event: {} TYPE: {} - Unit: {} Value: {}".format(str(event), cmd_type, value, unit))
+            data_obj = ECUData(
+                date=datetime.datetime.fromtimestamp(event.time),
+                type=cmd_type,
+                value=value,
+                unit=str(unit)
+            )
+            return data_obj
+    @staticmethod
     def on_event(event):
         if not isinstance(event.value, Status):
-            cmd_type = "{}{}".format(hex(event.command.mode), hex(event.command.pid)).replace("0x", '')
-            if event.value:
-                try:
-                    value = str(event.value.u)
-                    unit = str(event.value.magnitude)
-                except AttributeError:
-                    value = str(event.value)
-                    unit = "unknown"
-                logging.debug("Event: {} TYPE: {} - Unit: {} Value: {}".format(str(event), cmd_type, value, unit))
-                data_obj = ECUData(
-                    date=datetime.datetime.now(),
-                    type=cmd_type,
-                    value=str(unit),
-                    unit=value
-                )
-                OfflineHandler.cache(data_obj)
+            data_obj = OBDConn.create_dataobj(event)
+            OfflineHandler.cache(data_obj)
 
     def stop(self):
         self.connection.stop()

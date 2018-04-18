@@ -20,16 +20,12 @@ class ECUData(DocType):
     type = Text()
     value = Text()
     unit = Text()
-    value_num = Float()
+    unit = Float()
 
     class Meta:
         index = 'ecudata'
 
     def save(self, **kwargs):
-        try:
-            self.value_num = float(self.value)
-        except ValueError:
-            self.value_num = 0
         return super().save(**kwargs)
 try:
     ECUData.init()
